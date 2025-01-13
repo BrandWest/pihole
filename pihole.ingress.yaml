@@ -4,6 +4,7 @@ metadata:
   name: pihole
   namespace: pihole
   annotations:
+    avp.kubernetes.io/path: "argocd/data/argocd-vault-plugin/pihole"
     cert-manager.io/issuer: pihole-letsencrypt-prod
 spec:
   ingressClassName: nginx
