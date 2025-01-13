@@ -1,0 +1,46 @@
+# Used for storage creation
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole.storage.pv
+spec:
+  storageClassName: pihole.storage
+  capacity:
+    storage: 500Mi
+  persistentVolumeReclaimPolicy: Retain 
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: /home/pihole
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - node2
+
+---
+# Used for storage creation
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole.storage.dnsmasq.pv
+spec:
+  storageClassName: pihole.storage
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: /home/pihole/dnsmasq
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - node2

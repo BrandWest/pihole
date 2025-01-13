@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pihole
+  namespace: pihole
+  annotations:
+    cert-manager.io/issuer: pihole-letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - <path:argocd/data/argocd-vault-plugin/pihole#url>
+    secretName: pihole-tls
+  rules:
+  - host: <path:argocd/data/argocd-vault-plugin/pihole#url>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pihole-service
+            port:
+              number: 80

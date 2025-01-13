@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pihole
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pihole
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+      - env:
+        - name: ServerIP
+          value: 10.0.0.230
+        - name: WEBPASSWORD 
+          valueFrom:  # sets an encrypted password within the pihoel file: https://opensource.com/article/19/6/introduction-kubernetes-secrets-and-configmaps as reference
+            secretKeyRef:
+              name: pihole-secret
+              key: password #Note this is to be changed once set up using pihole -a -p
+        - name: DNS1
+          value: 127.0.0.1
+        - name: DNS2
+          value: 1.1.1.1
+        - name: TZ
+          value: UTC
+        image: pihole/pihole:latest
+        imagePullPolicy: IfNotPresent
+        name: pihole
+        ports: 
+        - containerPort: 80
+          name: pihole-http
+          protocol: TCP
+        - containerPort: 53
+          name: pihole-tcp-dns
+          protocol: TCP
+        - containerPort: 53
+          name: pihole-udp-dns
+          protocol: UDP
+        - containerPort: 443
+          name: pihole-ssl
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: "/etc/pihole"
+          name: pihole-storage
+        - mountPath: "/etc/dnsmasq.d/02-custom.conf"
+          name: pihole-dnsmasq
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: pihole-storage
+        persistentVolumeClaim:
+          claimName: pihole.storage.pvc
+      - name: pihole-dnsmasq
+        persistentVolumeClaim:  
+          claimName: pihole.storage.dnsmasq.pvc
+status: {}
+
