@@ -5,6 +5,8 @@ metadata:
     app: pihole
   name: pihole-service
   namespace: pihole
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.230  
 spec:
   selector:
     app: pihole
@@ -25,3 +27,5 @@ spec:
     port: 443
     targetPort: 443
     protocol: TCP
+type: Loadbalancer
+  
