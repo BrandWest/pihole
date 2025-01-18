@@ -47,7 +47,7 @@ spec:
         - containerPort: 53
           name: pihole-tcp-dns
           protocol: TCP
-        - containerPort: 53
+        - containerPort: 67
           name: pihole-udp-dns
           protocol: UDP
         - containerPort: 443
