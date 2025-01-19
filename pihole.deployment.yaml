@@ -26,7 +26,7 @@ spec:
       containers:
       - env:
         - name: ServerIP
-          value: 10.0.0.230
+          value: 10.0.0.204
         - name: WEBPASSWORD 
           valueFrom:
             secretKeyRef:
@@ -38,7 +38,7 @@ spec:
           value: 1.1.1.1
         - name: TZ
           value: UTC
-        image: pihole/pihole:latest
+        image: pihole/pihole@sha256:0def896a596e8d45780b6359dbf82fc8c75ef05b97e095452e67a0a4ccc95377
         imagePullPolicy: IfNotPresent
         name: pihole
         ports: 
@@ -48,7 +48,7 @@ spec:
         - containerPort: 53
           name: pihole-tcp-dns
           protocol: TCP
-        - containerPort: 67
+        - containerPort: 53
           name: pihole-udp-dns
           protocol: UDP
         - containerPort: 443
@@ -57,7 +57,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /admin/index.php
-            port: http
+            port: pihole-http
             scheme: HTTP
           initialDelaySeconds: 60
           failureThreshold: 10
@@ -65,7 +65,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /admin/index.php
-            port: http
+            port: pihole-http
             scheme: HTTP
           initialDelaySeconds: 60
           failureThreshold: 10
