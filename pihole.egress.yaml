@@ -20,9 +20,9 @@ spec:
     protocol: TCP
     targetPort: 80 #Container port
   - name: pihole-udp-dns
-    port: 53
+    port: 67
     protocol: UDP
-    targetPort: 53
+    targetPort: 67
   - name: pihole-ssl
     port: 443
     targetPort: 443
