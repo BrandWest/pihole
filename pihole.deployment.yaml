@@ -22,7 +22,6 @@ spec:
       labels:
         app: pihole
     spec:
-      hostname: pihole.diagon.ally
       hostNetwork: true
       containers:
       - env:
