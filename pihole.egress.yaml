@@ -5,9 +5,9 @@ metadata:
     app: pihole
   name: pihole-service
   namespace: pihole
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.230  
 spec:
+  type: NodePort
+  externalTrafficPolicy: Local
   selector:
     app: pihole
   ports:
@@ -26,6 +26,38 @@ spec:
   - name: pihole-ssl
     port: 443
     targetPort: 443
-    protocol: TCP
-  type: LoadBalancer
-  
+    protocol: TCP  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-dns-tcp
+  labels:
+    app: pihole
+spec:
+  type: NodePort
+  externalTrafficPolicy: Local
+  ports:
+    - name: dns
+      port: 53
+      targetPort: 53
+      protocol: TCP
+  selector:
+    app: pihole
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-dns-udp
+  labels:
+    app: pihole
+spec:
+  type: NodePort
+  externalTrafficPolicy: Local
+  ports:
+    - name: pihole-dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
+  selector:
+    app: pihole   
