@@ -4,16 +4,16 @@ metadata:
   name: pihole
   namespace: pihole
   annotations:
-    avp.kubernetes.io/path: "argocd/data/argocd-vault-plugin/pihole"
+    avp.kubernetes.io/path: "secret/data/apps/pihole"
     cert-manager.io/issuer: pihole-letsencrypt-prod
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - <path:argocd/data/argocd-vault-plugin/pihole#url>
+    - <path:secret/data/apps/pihole#url>
     secretName: pihole-tls
   rules:
-  - host: <path:argocd/data/argocd-vault-plugin/pihole#url>
+  - host: <path:secret/data/apps/pihole#url>
     http:
       paths:
       - path: /

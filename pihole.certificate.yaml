@@ -4,7 +4,7 @@ metadata:
   name: pihole-tls
   namespace: pihole
   annotations:
-    avp.kubernetes.io/path: "argocd/data/argocd-vault-plugin/pihole"
+    avp.kubernetes.io/path: "secret/data/apps/pihole"
 
 spec:
   secretName: pihole-tls
@@ -13,4 +13,4 @@ spec:
   duration: 2160h0m0s
   renewBefore: 360h0m0s  
   dnsNames:
-  - <path:argocd/data/argocd-vault-plugin/pihole#url>
+  - <path:secret/data/apps/pihole#url>
